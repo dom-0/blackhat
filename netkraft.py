@@ -9,6 +9,7 @@ import threading
 import os
 
 def execute(cmd):
+
     cmd = cmd.strip()
     if not cmd: # incase of a random enter or Ctrl+D
         return 
@@ -17,9 +18,9 @@ def execute(cmd):
 
 
 def handle_client(client_socket, server_socket, args):
+
     ####### Upload Logic
     if args.upload:
-
         file_buffer = b""
         while True:
             data = client_socket.recv(4096)
@@ -56,11 +57,8 @@ def handle_client(client_socket, server_socket, args):
                 client_socket.send(b"Error: Wrong command or filename\n")
                 cmd_buffer = b""
 
-    ####### Ad-hoc command execution 
-        
+class NetKraft:
 
-
-class NetCat:
     def __init__(self, args, buffer=""):
         self.args = args
         self.buffer = buffer
@@ -83,10 +81,8 @@ class NetCat:
                     client_handler.start()       
                 except KeyboardInterrupt:
                     sys.exit()
-
         else:
             self.send()
-            
             
     def send(self):
         """Send data to the target host."""
@@ -95,23 +91,19 @@ class NetCat:
             self.socket.send(self.buffer)
 
             
-
-
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--command", action="store_true", help="initialize command shell")
-    parser.add_argument("-e", "--execute", help="execute specified command")
     parser.add_argument("-l", "--listen", action="store_true", help="listen")
     parser.add_argument("-p", "--port", type=int, default=5555, help="specified port")
     parser.add_argument("-t", "--target", default="192.168.1.203", help="specified IP")
     parser.add_argument("-u", "--upload", help="upload file")
     args = parser.parse_args()
+    
     if args.listen:
         buffer = ""
     else:
         buffer = sys.stdin.read()
 
-    nc = NetCat(args, buffer.encode("utf-8"))
+    nc = NetKraft(args, buffer.encode("utf-8"))
     nc.run()
