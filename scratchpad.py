@@ -1,14 +1,13 @@
-import subprocess
-import shlex
+#!/usr/bin/env python3
+
+ax = ['0x53', '0x75', '0x72', '0x65', '0x20', '0x74', 
+    '0x68', '0x69', '0x6e', '0x67', '0x21', '0x20', 
+    '0x45', '0x6e', '0x6a', '0x6f', '0x79']
+    
+seq=""
+for a in ax:
+    seq += bytes.fromhex(a.split('x')[-1]).decode('utf-8')
+print (seq)
 
 
-def execute(cmd):
-    """Execute a command on the target host."""
-    cmd = cmd.strip()
-    if not cmd:
-        return
-    output = subprocess.check_output(shlex.split(cmd), stderr=subprocess.STDOUT)
-    return output.decode()
 
-res = execute('ls -l')
-print(res)
